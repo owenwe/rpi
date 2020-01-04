@@ -1,0 +1,16 @@
+{
+  "name": "servo-websocket",
+  "version": "1.0.0",
+  "description": "Raspberry Pi (B) Servo Websocket Control Project",
+  "main": "webserver.js",
+  "private": true,
+  "author": "Wes Owen",
+  "license": "MIT",
+  "scripts": {
+    "webserver": "sudo node webserver.js"
+  },
+  "dependencies": {
+    "pigpio": "^1.2.3",
+    "socket.io": "^2.2.0"
+  }
+}

@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+<head>
+    <title>RPi LED RGB Color Controller</title>
+    <link href="favicon.ico" rel="shortcut icon" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="container-fluid">
+    <h1>RPi LED RGB Color Controller</h1>
+    <div class="row">
+        <div class="col-5">
+            <div class="form-group row align-items-center">
+                <label id="rColorLabel" for="redSlider" class="col-6 col-form-label"></label>
+                <div class="col-6">
+                    <input type="range" min="0" max="255" value="0" class="form-control-range" id="redSlider">
+                </div>
+            </div>
+            <div class="form-group row align-items-center">
+                <label id="gColorLabel" for="greenSlider" class="col-6 col-form-label"></label>
+                <div class="col-6">
+                    <input type="range" min="0" max="255" value="0" class="form-control-range" id="greenSlider">
+                </div>
+            </div>
+            <div class="form-group row align-items-center">
+                <label id="bColorLabel" for="blueSlider" class="col-6 col-form-label"></label>
+                <div class="col-6">
+                    <input type="range" min="0" max="255" value="0" class="form-control-range" id="blueSlider">
+                </div>
+            </div>
+        </div>
+        <div class="col-auto" style="background-color:black" id="colorShow">
+            <div style="width:200px;height:200px"></div>
+        </div>
+    </div>
+    <p>Or pick a color: <input type="color" id="pickColor"></p>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+<script src="https://www.w3schools.com/lib/w3color.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script>
+    const updateColorLabels = function() {
+        let rLabel = document.getElementById('rColorLabel');
+        let gLabel = document.getElementById('gColorLabel');
+        let bLabel = document.getElementById('bColorLabel');
+
+        rLabel.innerHTML = `Red [value] = ${rgb.red}, [LED value] = ${255 - rgb.red}`;
+        gLabel.innerHTML = `Green [value] = ${rgb.green}, [LED value] = ${255 - rgb.green}`;
+        bLabel.innerHTML = `Blue [value] = ${rgb.blue}, [LED value] = ${255 - rgb.blue}`;
+    };
+    var socket = io();
+
+    let rgb = w3color("rgb(0,0,0)");
+    let colorShow = document.getElementById('colorShow');
+
+    updateColorLabels()
+
+    window.addEventListener("load", function() {
+        let rSlider = document.getElementById("redSlider");
+        let gSlider = document.getElementById("greenSlider");
+        let bSlider = document.getElementById("blueSlider");
+        let picker = document.getElementById("pickColor");
+
+        // add event listener for when red slider changes
+        rSlider.addEventListener("change", function() {
+            rgb.red = this.value;
+            colorShow.style.backgroundColor = rgb.toRgbString();
+            updateColorLabels();
+            socket.emit("rgbLed", rgb);
+        });
+
+        gSlider.addEventListener("change", function() {
+            rgb.green = this.value;
+            colorShow.style.backgroundColor = rgb.toRgbString();
+            updateColorLabels();
+            socket.emit("rgbLed", rgb);
+        });
+
+        bSlider.addEventListener("change", function() {
+            rgb.blue = this.value;
+            colorShow.style.backgroundColor = rgb.toRgbString();
+            updateColorLabels();
+            socket.emit("rgbLed", rgb);
+        });
+
+        // add event listener for when colorpicker changes
+        picker.addEventListener("input", function() {
+            // Update the RED/GREEN/BLUE color according to the picker
+            rgb.red = w3color(this.value).red;
+            rgb.green = w3color(this.value).green;
+            rgb.blue = w3color(this.value).blue;
+
+            // update the "Current color"
+            colorShow.style.backgroundColor = rgb.toRgbString();
+
+            // Update the RED/GREEN/BLUE slider position according to the picker
+            rSlider.value = rgb.red;
+            gSlider.value = rgb.green;
+            bSlider.value = rgb.blue;
+
+            updateColorLabels();
+
+            // send the updated color to RGB LED via WebSocket
+            socket.emit("rgbLed", rgb);
+        });
+    });
+</script>
+</body>
+</html>

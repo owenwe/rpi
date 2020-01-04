@@ -1,0 +1,16 @@
+{
+  "name": "rpi-button-led",
+  "version": "1.0.0",
+  "description": "Raspberry Pi (Model B) LED Button Control Program",
+  "main": "index.js",
+  "scripts": {
+    "operate": "sudo node index.js",
+    "operate-onoff": "sudo node index-onoff.js"
+  },
+  "author": "Wes Owen",
+  "license": "MIT",
+  "dependencies": {
+    "onoff": "^4.1.3",
+    "pigpio": "^1.2.3"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "servo1",
+  "version": "1.0.0",
+  "description": "Raspberry Pi (B) Servo Control Project",
+  "main": "index.js",
+  "private": true,
+  "author": "Wes Owen",
+  "license": "MIT",
+  "scripts": {
+    "servo": "sudo node index.js"
+  },
+  "dependencies": {
+    "pigpio": "^1.2.3",
+    "socket.io": "^2.2.0"
+  }
+}

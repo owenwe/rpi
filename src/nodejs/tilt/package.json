@@ -1,0 +1,14 @@
+{
+  "name": "rpi-tilt",
+  "version": "1.0.0",
+  "description": "Raspberry Pi (Model B) Tilt Switch Control Program",
+  "main": "index.js",
+  "scripts": {
+    "operate": "sudo node index.js"
+  },
+  "author": "Wes Owen",
+  "license": "MIT",
+  "dependencies": {
+    "pigpio": "^1.2.3"
+  }
+}

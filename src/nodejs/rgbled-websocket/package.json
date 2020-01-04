@@ -1,0 +1,16 @@
+{
+  "name": "rpi-websocket",
+  "version": "1.0.0",
+  "description": "Raspberry Pi (B) Web Socket Sandbox Project",
+  "main": "webserver.js",
+  "private": true,
+  "scripts": {
+    "webserver": "sudo node webserver.js"
+  },
+  "author": "Wes Owen",
+  "license": "MIT",
+  "dependencies": {
+    "pigpio": "^1.2.3",
+    "socket.io": "^2.2.0"
+  }
+}
