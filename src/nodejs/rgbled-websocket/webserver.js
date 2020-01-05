@@ -14,7 +14,7 @@ let RGB_B = 1;
 LED_R.digitalWrite(RGB_R);
 LED_G.digitalWrite(RGB_G);
 LED_B.digitalWrite(RGB_B);
-pigpio.initialize()
+pigpio.initialize();
 
 const cleanup = () => {
     LED_R.digitalWrite(1);
@@ -24,7 +24,7 @@ const cleanup = () => {
     process.exit();
 };
 
-process.on('SIGINT', cleanup)
+process.on('SIGINT', cleanup);
 
 function handler (req, res) {
     let filePath = req.url.split('.');
@@ -79,4 +79,4 @@ io.sockets.on('connection', function (socket) {
 
 
 
-http.listen(8080)
+http.listen(8080);
